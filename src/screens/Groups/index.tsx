@@ -37,6 +37,8 @@ export function Groups() {
           />
         )}
 
+        showsVerticalScrollIndicator={false}
+
         contentContainerStyle={groups.length === 0 && { flex: 1 }}
 
         ListEmptyComponent={() => (

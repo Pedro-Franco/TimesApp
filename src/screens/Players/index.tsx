@@ -2,12 +2,14 @@ import { useState } from 'react'
 import { FlatList } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 
-import { ButtonIcon } from "@components/ButtonIcon";
-import { PlayerCard } from '@components/PlayerCard';
-import { Highlight } from "@components/Highlight";
+import { Input } from "@components/Input";
+import { Button } from '@components/Button';
 import { Filter } from "@components/Filter";
 import { Header } from "@components/Header";
-import { Input } from "@components/Input";
+import { Highlight } from "@components/Highlight";
+import { ListEmpty } from '@components/ListEmpty';
+import { PlayerCard } from '@components/PlayerCard';
+import { ButtonIcon } from "@components/ButtonIcon";
 
 
 import { Container, Form, HeaderList, NumberOfPlayers } from "./styles";
@@ -20,7 +22,7 @@ export function Players() {
 
   const [team, setTeam] = useState('Time A');
 
-  const [players, setPlayers] = useState(['kboredamontanha', 'VmZ100MiR4', 'Rennkyz', 'ZeptoAngelz', 'slaapgames']);
+  const [players, setPlayers] = useState([]);
 
   const route = useRoute();
   const { group } = route.params as RouteParams;
@@ -73,6 +75,24 @@ export function Players() {
             onRemove={() => {}}
           />
         )}
+
+        showsVerticalScrollIndicator={false}
+
+        ListEmptyComponent={() => (
+          <ListEmpty 
+            message="Não há jogadores nesse time !"
+          />
+        )}
+
+        contentContainerStyle={[
+          {paddingBottom: 100}, 
+          players.length === 0 && {flex: 1}
+        ]}
+      />
+
+      <Button 
+        title= 'Remover Time'
+        type= 'SECONDARY'
       />
 
     </Container>
