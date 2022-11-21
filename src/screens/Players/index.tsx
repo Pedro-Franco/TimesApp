@@ -121,7 +121,7 @@ export function Players() {
     
   }
 
-  async function handleGroupRemove(groupDelete: string){
+  async function handleGroupRemove(){
 
     Alert.alert(
       'Remover grupo', 
