@@ -125,7 +125,7 @@ export function Players() {
 
     Alert.alert(
       'Remover grupo', 
-      'Deseja remover este grupo ?', 
+      'Deseja realmente remover este grupo ?', 
       [
         {text: 'Não', style: 'cancel'},
         {text: 'Sim', onPress: () => groupRemove()},
