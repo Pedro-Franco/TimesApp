@@ -20,12 +20,14 @@ import { playersGetByGroupAndTeam } from '@storage/player/playerGetByGroupAndTea
 import { PlayerStorageDTO } from '@storage/player/PlayerStorageDTO';
 import { playersRemoveByGroup } from '@storage/player/playerRemoveByGroup';
 import { groupRemoveByName } from '@storage/group/groupRemoveByName';
+import { Loading } from '@components/Loading';
 
 type RouteParams = {
   group: string;
 }
 
 export function Players() {
+  const [isLoading, setIsLoading] = useState(true);
   const [newPlayerName, setNewPlayerName] = useState('');
   const [team, setTeam] = useState('Time A');
 
@@ -73,10 +75,14 @@ export function Players() {
   async function fetchPlayersByTeam(){
     
     try {
+
+      setIsLoading(true);
     
       const playersByTeam = await playersGetByGroupAndTeam(group, team)
 
       setPlayers(playersByTeam);
+
+      setIsLoading(false);
 
     } catch (error) {
       
@@ -124,8 +130,8 @@ export function Players() {
   async function handleGroupRemove(){
 
     Alert.alert(
-      'Remover grupo', 
-      'Deseja remover este grupo ?', 
+      'Remover time', 
+      'Deseja remover este time ?', 
       [
         {text: 'Não', style: 'cancel'},
         {text: 'Sim', onPress: () => groupRemove()},
@@ -182,29 +188,32 @@ export function Players() {
         </NumberOfPlayers>
       </HeaderList>
 
-      <FlatList
-        data={players}
-        keyExtractor={item => item.name}
-        renderItem={({ item }) => (
-          <PlayerCard 
-            name={item.name}
-            onRemove={() => handlePlayerRemove(item.name)}
-          />
-        )}
+      {
+        isLoading ? <Loading /> :
+        <FlatList
+          data={players}
+          keyExtractor={item => item.name}
+          renderItem={({ item }) => (
+            <PlayerCard 
+              name={item.name}
+              onRemove={() => handlePlayerRemove(item.name)}
+            />
+          )}
 
-        showsVerticalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
 
-        ListEmptyComponent={() => (
-          <ListEmpty 
-            message="Não há jogadores nesse time !"
-          />
-        )}
+          ListEmptyComponent={() => (
+            <ListEmpty 
+              message="Não há jogadores nesse time !"
+            />
+          )}
 
-        contentContainerStyle={[
-          {paddingBottom: 100}, 
-          players.length === 0 && {flex: 1}
-        ]}
-      />
+          contentContainerStyle={[
+            {paddingBottom: 100}, 
+            players.length === 0 && {flex: 1}
+          ]}
+        />
+      }
 
       <Button 
         title= 'Remover Time'

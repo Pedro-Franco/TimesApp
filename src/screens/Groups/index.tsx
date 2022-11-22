@@ -11,8 +11,10 @@ import { Header } from '@components/Header';
 import { Button } from '@components/Button';
 
 import { Container } from './styles';
+import { Loading } from '@components/Loading';
 
 export function Groups() {
+  const [isLoading, setIsLoading] = useState(true);
   const [groups, setGroups] = useState<string[]>([]);
 
   const navigation = useNavigation();
@@ -24,8 +26,12 @@ export function Groups() {
   async function fetchGroups() {
     try {
 
+      setIsLoading(true);
+
       const data = await groupsGetAll();
       setGroups(data);
+
+      setIsLoading(false);
 
     } catch (error) {
       
@@ -52,26 +58,30 @@ export function Groups() {
         subtitle='jogue com seu time'
       />
 
-      <FlatList
-        data={groups}
-        keyExtractor={item => item}
-        renderItem={({ item }) => (
-          <GroupCard 
-            title={item}
-            onPress = {() => handleOpenGroup(item)}
-          />
-        )}
+      {
+        isLoading ? <Loading /> :
+        
+        <FlatList
+          data={groups}
+          keyExtractor={item => item}
+          renderItem={({ item }) => (
+            <GroupCard 
+              title={item}
+              onPress = {() => handleOpenGroup(item)}
+            />
+          )}
 
-        showsVerticalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
 
-        contentContainerStyle={groups.length === 0 && { flex: 1 }}
+          contentContainerStyle={groups.length === 0 && { flex: 1 }}
 
-        ListEmptyComponent={() => (
-          <ListEmpty 
-            message="Não há times cadastrado !"
-          />
-        )}
-      />
+          ListEmptyComponent={() => (
+            <ListEmpty 
+              message="Não há times cadastrado !"
+            />
+          )}
+        />
+      }
 
       <Button 
         title='Criar novo time'
