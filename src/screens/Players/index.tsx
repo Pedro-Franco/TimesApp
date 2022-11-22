@@ -130,8 +130,8 @@ export function Players() {
   async function handleGroupRemove(){
 
     Alert.alert(
-      'Remover time', 
-      'Deseja remover este time ?', 
+      'Remover grupo', 
+      'Deseja realmente remover este grupo ?', 
       [
         {text: 'Não', style: 'cancel'},
         {text: 'Sim', onPress: () => groupRemove()},
